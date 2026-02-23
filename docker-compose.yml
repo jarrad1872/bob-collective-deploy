@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  openclaw-main:
+    image: ghcr.io/openclaw/openclaw:latest
+    container_name: openclaw-main
+    restart: unless-stopped
+    ports:
+      - "18789:3000"
+    volumes:
+      - openclaw-main-data:/home/node/.openclaw
+      - ./instances/main/workspace:/home/node/workspace:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - NODE_ENV=production
+      - OPENCLAW_AGENT_ID=main
+      - TELEGRAM_BOT_TOKEN=${MAIN_TELEGRAM_BOT_TOKEN}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    networks:
+      - bob-collective
+
+  openclaw-kcc:
+    image: ghcr.io/openclaw/openclaw:latest
+    container_name: openclaw-kcc
+    restart: unless-stopped
+    ports:
+      - "18790:3000"
+    volumes:
+      - openclaw-kcc-data:/home/node/.openclaw
+      - ./instances/kcc/workspace:/home/node/workspace:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - NODE_ENV=production
+      - OPENCLAW_AGENT_ID=kcc
+      - TELEGRAM_BOT_TOKEN=${MAIN_TELEGRAM_BOT_TOKEN}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    networks:
+      - bob-collective
+
+  openclaw-dmi:
+    image: ghcr.io/openclaw/openclaw:latest
+    container_name: openclaw-dmi
+    restart: unless-stopped
+    ports:
+      - "18791:3000"
+    volumes:
+      - openclaw-dmi-data:/home/node/.openclaw
+      - ./instances/dmi/workspace:/home/node/workspace:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - NODE_ENV=production
+      - OPENCLAW_AGENT_ID=dmi
+      - TELEGRAM_BOT_TOKEN=${MAIN_TELEGRAM_BOT_TOKEN}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    networks:
+      - bob-collective
+
+  openclaw-rdt:
+    image: ghcr.io/openclaw/openclaw:latest
+    container_name: openclaw-rdt
+    restart: unless-stopped
+    ports:
+      - "18792:3000"
+    volumes:
+      - openclaw-rdt-data:/home/node/.openclaw
+      - ./instances/rdt/workspace:/home/node/workspace:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - NODE_ENV=production
+      - OPENCLAW_AGENT_ID=rdt
+      - TELEGRAM_BOT_TOKEN=${MAIN_TELEGRAM_BOT_TOKEN}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    networks:
+      - bob-collective
+
+volumes:
+  openclaw-main-data:
+  openclaw-kcc-data:
+  openclaw-dmi-data:
+  openclaw-rdt-data:
+
+networks:
+  bob-collective:
+    driver: bridge
